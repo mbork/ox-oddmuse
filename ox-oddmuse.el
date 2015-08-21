@@ -42,6 +42,7 @@
     (code . org-oddmuse-verbatim)	; this is on purpose!
     (plain-list . org-oddmuse-plain-list)
     (item . org-oddmuse-item)
+    (link . org-oddmuse-link)
     (paragraph . org-oddmuse-paragraph)
     (headline . org-oddmuse-headline)
     (section . org-oddmuse-section)
@@ -98,6 +99,16 @@ CONTENTS is the actual text, INFO is the communication channel."
 			  (error "Description-type lists are not supported -- org-oddmuse-item"))))
 	  " "
 	  contents))
+
+(defun org-oddmuse-link (link contents info)
+  "Transcode LINK from Org to Oddmuse.
+CONTENTS is the actual text, INFO is the communication channel."
+  (cl-case (intern (org-element-property :type link))
+    (http (format "[[%s%s]]"
+		  (org-element-property :raw-link link)
+		  (if contents (concat "|" contents) "")))
+    (fuzzy (format "[[%s]]" (org-element-property :raw-link link)))
+    (t (edebug))))
 
 (defun org-oddmuse-paragraph (paragraph contents info)
   "Transcode PARAGRAPH element into Oddmuse format.
