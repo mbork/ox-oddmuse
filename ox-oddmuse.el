@@ -34,6 +34,8 @@
 
 (org-export-define-backend 'oddmuse
   '((plain-text . org-oddmuse-plain-text)
+    (italic . org-oddmuse-italic)
+    (bold . org-oddmuse-bold)
     (paragraph . org-oddmuse-paragraph)
     (headline . org-oddmuse-headline)
     (section . org-oddmuse-section)
@@ -48,6 +50,16 @@
 TEXT is the string to transcode.  INFO is a plist holding
 contextual information."
   text)
+
+(defun org-oddmuse-italic (italic contents info)
+  "Transcode ITALIC from Org-mode to Oddmuse.
+CONTENTS is the actual text, INFO is the communication channel."
+  (concat "//" contents "//"))
+
+(defun org-oddmuse-bold (bold contents info)
+  "Transcode BOLD from Org-mode to Oddmuse.
+CONTENTS is the actual text, INFO is the communication channel."
+  (concat "**" contents "**"))
 
 (defun org-oddmuse-paragraph (paragraph contents info)
   "Transcode PARAGRAPH element into Oddmuse format.
