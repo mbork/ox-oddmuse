@@ -27,6 +27,8 @@
 ;; useful tool and as an example of exporters for the talk during
 ;; EmacsConf 2015.
 
+(require 'cl-lib)
+
 ;;; Code:
 
 (defcustom ox-oddmuse-menu-key ?a
@@ -38,6 +40,8 @@
     (bold . org-oddmuse-bold)
     (verbatim . org-oddmuse-verbatim)
     (code . org-oddmuse-verbatim)	; this is on purpose!
+    (plain-list . org-oddmuse-plain-list)
+    (item . org-oddmuse-item)
     (paragraph . org-oddmuse-paragraph)
     (headline . org-oddmuse-headline)
     (section . org-oddmuse-section)
@@ -67,6 +71,33 @@ CONTENTS is the actual text, INFO is the communication channel."
   "Transcode VERBATIM from Org to Oddmuse.
 CONTENTS is the actual text, INFO is the communication channel."
   (concat "{{{" (org-element-property :value verbatim) "}}}"))
+
+(defun org-oddmuse-plain-list (plain-list contents info)
+  "Transcode PLAIN-LIST to Oddmuse.
+CONTENTS is the actual text, INFO is the communication channel.  The
+actual work is done by the `org-oddmuse-item' function."
+  contents)
+
+(defun org-item-get-level (item)
+  "Get the level of ITEM, which should be an item in a plain list.
+Levels are indexed from 0."
+  (let ((pparent (org-element-property :parent (org-element-property :parent item))))
+    (if (eq (org-element-type pparent)
+	    'item)
+	(1+ (org-item-get-level pparent))
+      0)))
+
+(defun org-oddmuse-item (item contents info)
+  "Transcode ITEM to Oddmuse.
+CONTENTS is the actual text, INFO is the communication channel."
+  (concat (make-string (1+ (org-item-get-level item))
+		       (cl-case (org-element-property :type (org-element-property :parent item))
+			 (ordered ?#)
+			 (unordered ?*)
+			 (descriptive
+			  (error "Description-type lists are not supported -- org-oddmuse-item"))))
+	  " "
+	  contents))
 
 (defun org-oddmuse-paragraph (paragraph contents info)
   "Transcode PARAGRAPH element into Oddmuse format.
