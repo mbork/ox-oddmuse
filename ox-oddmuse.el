@@ -112,7 +112,7 @@ CONTENTS is the actual text, INFO is the communication channel."
 		  (org-element-property :raw-link link)
 		  (if contents (concat "|" contents) "")))
     (fuzzy (format "[[%s]]" (org-element-property :raw-link link)))
-    (t (edebug))))
+    (t (error "Link types other than http and internal ones are not supported -- org-oddmuse-link"))))
 
 (defun org-oddmuse-line-break (line-break contents info)
   "Transcode LINE-BREAK object from Org to Oddmuse."
