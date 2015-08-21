@@ -108,9 +108,9 @@ CONTENTS is the actual text, INFO is the communication channel."
   "Transcode LINK from Org to Oddmuse.
 CONTENTS is the actual text, INFO is the communication channel."
   (cl-case (intern (org-element-property :type link))
-    (http (format "[[%s%s]]"
-		  (org-element-property :raw-link link)
-		  (if contents (concat "|" contents) "")))
+    ((http https) (format "[[%s%s]]"
+		    (org-element-property :raw-link link)
+		    (if contents (concat "|" contents) "")))
     (fuzzy (format "[[%s]]" (org-element-property :raw-link link)))
     (t (error "Link types other than http and internal ones are not supported -- org-oddmuse-link"))))
 
