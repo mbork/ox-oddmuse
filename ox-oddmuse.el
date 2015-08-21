@@ -36,6 +36,8 @@
   '((plain-text . org-oddmuse-plain-text)
     (italic . org-oddmuse-italic)
     (bold . org-oddmuse-bold)
+    (verbatim . org-oddmuse-verbatim)
+    (code . org-oddmuse-verbatim)	; this is on purpose!
     (paragraph . org-oddmuse-paragraph)
     (headline . org-oddmuse-headline)
     (section . org-oddmuse-section)
@@ -60,6 +62,11 @@ CONTENTS is the actual text, INFO is the communication channel."
   "Transcode BOLD from Org-mode to Oddmuse.
 CONTENTS is the actual text, INFO is the communication channel."
   (concat "**" contents "**"))
+
+(defun org-oddmuse-verbatim (verbatim contents info)
+  "Transcode VERBATIM from Org to Oddmuse.
+CONTENTS is the actual text, INFO is the communication channel."
+  (concat "{{{" (org-element-property :value verbatim) "}}}"))
 
 (defun org-oddmuse-paragraph (paragraph contents info)
   "Transcode PARAGRAPH element into Oddmuse format.
