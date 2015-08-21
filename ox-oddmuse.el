@@ -43,6 +43,8 @@
     (plain-list . org-oddmuse-plain-list)
     (item . org-oddmuse-item)
     (link . org-oddmuse-link)
+    (line-break . org-oddmuse-line-break)
+    (horizontal-rule . org-oddmuse-horizontal-rule)
     (paragraph . org-oddmuse-paragraph)
     (headline . org-oddmuse-headline)
     (section . org-oddmuse-section)
@@ -109,6 +111,14 @@ CONTENTS is the actual text, INFO is the communication channel."
 		  (if contents (concat "|" contents) "")))
     (fuzzy (format "[[%s]]" (org-element-property :raw-link link)))
     (t (edebug))))
+
+(defun org-oddmuse-line-break (line-break contents info)
+  "Transcode LINE-BREAK object from Org to Oddmuse."
+  "\\\\")
+
+(defun org-oddmuse-horizontal-rule (horizontal-rule contents info)
+  "Transcode HORIZONTAL-RULE from Org to Oddmuse."
+  "\n----\n")
 
 (defun org-oddmuse-paragraph (paragraph contents info)
   "Transcode PARAGRAPH element into Oddmuse format.
