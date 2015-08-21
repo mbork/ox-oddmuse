@@ -45,6 +45,8 @@
     (link . org-oddmuse-link)
     (line-break . org-oddmuse-line-break)
     (horizontal-rule . org-oddmuse-horizontal-rule)
+    (example-block . org-oddmuse-example-block)
+    (fixed-width . org-oddmuse-fixed-width)
     (paragraph . org-oddmuse-paragraph)
     (headline . org-oddmuse-headline)
     (section . org-oddmuse-section)
@@ -119,6 +121,16 @@ CONTENTS is the actual text, INFO is the communication channel."
 (defun org-oddmuse-horizontal-rule (horizontal-rule contents info)
   "Transcode HORIZONTAL-RULE from Org to Oddmuse."
   "\n----\n")
+
+(defun org-oddmuse-example-block (example-block contents info)
+  "Transcode EXAMPLE-BLOCK from Org to Oddmuse.
+CONTENTS is the actual text, INFO is the communication channel."
+  (concat "{{{\n" (car (org-export-unravel-code example-block)) "}}}\n"))
+
+(defun org-oddmuse-fixed-width (fixed-width contents info)
+  "Transcode a FIXED-WIDTH element from Org to Oddmuse.
+CONTENTS is the actual text, INFO is the communication channel."
+  (concat "{{{\n" (org-remove-indentation (org-element-property :value fixed-width)) "}}}\n"))
 
 (defun org-oddmuse-paragraph (paragraph contents info)
   "Transcode PARAGRAPH element into Oddmuse format.
