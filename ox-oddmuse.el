@@ -175,6 +175,11 @@ holding export options."
     (org-export-to-file 'oddmuse outfile
       async subtreep visible-only body-only ext-plist)))
 
+(defun org-oddmuse-convert-region-to-oddmuse ()
+  "Assume the region has Org-mode syntax, and convert it to Oddmuse."
+  (interactive)
+  (org-export-replace-region-by 'oddmuse))
+
 (provide 'ox-oddmuse)
 
 ;;; ox-oddmuse.el ends here
