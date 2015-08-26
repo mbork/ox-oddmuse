@@ -40,8 +40,10 @@
     (template . org-oddmuse-template))
   :export-block "ODDMUSE"
   :menu-entry `(,ox-oddmuse-menu-key "Export to Oddmuse"
-				    ((?O "As buffer" org-oddmuse-export-as-oddmuse)
-				     (?o "As file" org-oddmuse-export-to-oddmuse))))
+				     ((,(upcase ox-oddmuse-menu-key)
+				       "As buffer" org-oddmuse-export-as-oddmuse)
+				      (,(downcase ox-oddmuse-menu-key)
+				       "As file" org-oddmuse-export-to-oddmuse))))
 
 (defun org-oddmuse-plain-text (text info)
   "Transcode a TEXT string from Org to Oddmuse.
