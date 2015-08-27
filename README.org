@@ -1,0 +1,109 @@
+#+TITLE: Creating custom exporter for Emacs Org-mode
+#+AUTHOR: Marcin Borkowski
+#+EMAIL: mbork@mbork.pl
+
+* Introduction
+This is a file with notes accompanying the [[https://github.com/mbork/ox-oddmuse][ox-oddmuse]] Org-mode to
+Oddmuse exporter.  It is intended as an aid for the [[http://emacsconf2015.org/][EmacsConf2015]] talk
+about writing custom Org-mode exporters.  The talk is aimed at
+inexperienced Emacs Lisp programmers who wish to write their own
+Org-mode exporter.
+
+* Levels of customizing Org-mode exporters
+** User options
+See =M-x customize-group RET org-export RET=.
+
+** Filters
+See the [[info:org#Advanced%20configuration][manual node on advanced configuration]].
+
+** Derived exporters
+See e.g. my “educational” exporters to [[https://github.com/mbork/org-edu-html][HTML]] and to [[https://github.com/mbork/org-edu-latex][LaTeX]].
+
+** Custom exporter from scratch
+See this presentation.
+
+* Learning phase
+** Documentation on the net
+- http://orgmode.org/worg/exporters/ox-overview.html
+- http://orgmode.org/worg/exporters/ox-docstrings.html
+- http://orgmode.org/worg/exporters/org-element-docstrings.html
+- http://orgmode.org/worg/exporters/filter-markup.html
+- http://orgmode.org/worg/dev/org-element-api.html
+The bulk of above documents is made up from docstrings, so...
+
+** Source code
+...any file whose name matches "\`ox-.*\.el\'"
+
+* Making an exporter from scratch
+** Licensing issues
+Elisp libraries most probably should be GPLv2+ or GPLv3+ if
+distributed.
+
+** The basic structure of an exporter
+- =org-export-derive-backend=
+  - name
+  - transcoders
+    - minimal: plain-text, paragraph, headline, section, template
+  - options
+  - export block: a way to pass text verbatim to the backend
+  - menu entry: a convenient (?) entry point for the user
+- =org-whatever-export-as-whatever= (exporting to a buffer) and
+  =org-whatever-export-to-whatever= (exporting to a file)
+
+The =template= transcoder may attach headers or footers to the whole
+exported text.
+
+Notice that the headline’s level should not be extracted directly,
+since we might be exporting only a subtree, for example.
+
+** Basic markup
+Most transcoders accept three arguments: element/object, its (textual)
+contents, info (“communication channel”).  Often it is only the second
+one that matters.  The first one holds a lot of data about the object
+or element transcoded.  The last one holds a lot of data about the
+whole exporting process, like metadata or e.g. the level of the
+subtree being exported etc.
+
+** Verbatim text
+For some reason, italic/bold and code/verbatim text are treated
+differently.  In the latter case, one needs to access the =:value=
+property of the object, /not/ the contents!
+ 
+** Lists
+Since in Oddmuse you should use number of list-item markers equal to
+the item’s depth, things are non-trivial.  Thanks to Richard
+Lawrence’s suggestion (see [[https://lists.gnu.org/archive/html/emacs-orgmode/2015-07/msg00428.html][this thread]]), here’s one way to do it:
+#+BEGIN_EXAMPLE elisp
+(defun org-item-get-level (item)
+  "Get the level of ITEM, which should be an item in a plain list.
+Levels are indexed from 0."
+  (let ((pparent (org-element-property :parent (org-element-property :parent item))))
+    (if (eq (org-element-type pparent)
+	    'item)
+	(1+ (org-item-get-level pparent))
+      0)))
+#+END_EXAMPLE
+
+Notice that levels are zero-based.
+
+** Links
+There are quite a lot of link types in Org-mode (see variable
+=org-link-types=).  Here, we support only http and “fuzzy” (e.g.,
+internal links, which get converted to links to other wiki pages).
+
+Notice that the text of the link is in =contents=, and the link itself
+in =(org-element-property :raw-link link)=.  Also, since the link type
+is a string, we “cast it to symbol type” using =intern= (since
+=cl-case= uses =eql= to compare keys.
+
+Support for fuzzy links with contents ≠ raw link is left as an
+exercise;-).
+
+** Line-breaks and horizontal lines
+These are trivial.  Move on.
+
+** Example-blocks and fixed-width elements
+Actual code from example-blocks needs to be extracted.  On the other
+hand, fixed-width elements need to have its indentation removed.
+
+* Questions?
