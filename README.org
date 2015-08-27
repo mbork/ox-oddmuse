@@ -32,7 +32,7 @@ See this presentation.
 The bulk of above documents is made up from docstrings, so...
 
 ** Source code
-...any file whose name matches "\`ox-.*\.el\'"
+...any file whose name matches =\`ox-.*\.el\'﻿=
 
 * Making an exporter from scratch
 ** Licensing issues
