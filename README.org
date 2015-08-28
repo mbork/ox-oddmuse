@@ -96,9 +96,6 @@ in =(org-element-property :raw-link link)=.  Also, since the link type
 is a string, we “cast it to symbol type” using =intern= (since
 =cl-case= uses =eql= to compare keys.
 
-Support for fuzzy links with contents ≠ raw link is left as an
-exercise;-).
-
 ** Line-breaks and horizontal lines
 These are trivial.  Move on.
 
