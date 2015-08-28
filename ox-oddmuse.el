@@ -145,7 +145,7 @@ a communication channel."
 (defun org-oddmuse-headline (headline contents info)
   "Transcode HEADLINE from Org to Oddmuse.
 CONTENTS is the actual text, INFO is the communication channel."
-  (concat (make-string (org-export-get-relative-level headline info) ?=)
+  (concat (make-string (1+ (org-export-get-relative-level headline info)) ?=)
 	  " "
 	  (org-export-data (org-element-property :title headline) info)
 	  "\n"
