@@ -62,7 +62,15 @@
   "Transcode a TEXT string from Org to Oddmuse.
 TEXT is the string to transcode.  INFO is a plist holding
 contextual information."
-  text)
+  (with-temp-buffer
+    (insert text)
+    (goto-char (point-min))
+    (while (search-forward "\n" nil t)
+      (if (eq (char-after) ?\n)
+	  (skip-chars-forward "\n")
+	(delete-char -1)
+	(insert ?\s)))
+    (buffer-string)))
 
 (defun org-oddmuse-italic (italic contents info)
   "Transcode ITALIC from Org-mode to Oddmuse.
