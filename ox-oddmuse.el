@@ -46,6 +46,7 @@
     (line-break . org-oddmuse-line-break)
     (horizontal-rule . org-oddmuse-horizontal-rule)
     (example-block . org-oddmuse-example-block)
+    (src-block . org-oddmuse-src-block)
     (fixed-width . org-oddmuse-fixed-width)
     (paragraph . org-oddmuse-paragraph)
     (headline . org-oddmuse-headline)
@@ -137,6 +138,17 @@ CONTENTS is the actual text, INFO is the communication channel."
   "Transcode EXAMPLE-BLOCK from Org to Oddmuse.
 CONTENTS is the actual text, INFO is the communication channel."
   (concat "{{{\n" (car (org-export-unravel-code example-block)) "}}}\n"))
+
+(defun org-oddmuse-src-block (src-block contents info)
+  "Transcode SRC-BLOCK from Org to Oddmuse.
+Include caption (below the code, in italics) if present."
+  (let ((caption (org-export-get-caption src-block)))
+    (concat "{{{\n"
+	    (car (org-export-unravel-code src-block))
+	    "}}}\n"
+	    (if caption
+		(concat "//" (org-export-data caption info) "//\n")
+	      ""))))
 
 (defun org-oddmuse-fixed-width (fixed-width contents info)
   "Transcode a FIXED-WIDTH element from Org to Oddmuse.
