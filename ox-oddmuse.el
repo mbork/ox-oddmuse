@@ -120,7 +120,7 @@ CONTENTS is the actual text, INFO is the communication channel."
     ((http https) (format "[[%s%s]]"
 			  (org-element-property :raw-link link)
 			  (if contents (concat "|" contents) "")))
-    (fuzzy (format "[[%s%s]]]"
+    (fuzzy (format "[[%s%s]]"
 		   (org-element-property :raw-link link)
 		   (if contents (concat "|" contents) "")))
     (t (error "Link types other than http and internal ones are not supported -- org-oddmuse-link"))))
