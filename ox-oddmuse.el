@@ -51,7 +51,7 @@
     (headline . org-oddmuse-headline)
     (section . org-oddmuse-section)
     (template . org-oddmuse-template))
-  :menu-entry `(,ox-oddmuse-menu-key "Export to Oddmuse"
+   :menu-entry `(,ox-oddmuse-menu-key "Export to Oddmuse"
 				     ((,(upcase ox-oddmuse-menu-key)
 				       "As buffer" org-oddmuse-export-as-oddmuse)
 				      (,(downcase ox-oddmuse-menu-key)
