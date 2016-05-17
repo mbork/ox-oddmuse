@@ -48,6 +48,7 @@
     (horizontal-rule . org-oddmuse-horizontal-rule)
     (example-block . org-oddmuse-example-block)
     (src-block . org-oddmuse-src-block)
+    (quote-block . org-oddmuse-quote-block)
     (fixed-width . org-oddmuse-fixed-width)
     (paragraph . org-oddmuse-paragraph)
     (headline . org-oddmuse-headline)
@@ -150,6 +151,10 @@ Include caption (below the code, in italics) if present."
 	    (if caption
 		(concat "//" (org-export-data caption info) "//\n")
 	      ""))))
+
+(defun org-oddmuse-quote-block (quote-block contents info)
+  "Transcode QUOTE-BLOCK from Org to Oddmuse."
+  (concat "//" (replace-regexp-in-string " *\n$" "" contents) "//\n"))
 
 (defun org-oddmuse-fixed-width (fixed-width contents info)
   "Transcode a FIXED-WIDTH element from Org to Oddmuse.
