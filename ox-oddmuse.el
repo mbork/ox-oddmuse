@@ -28,6 +28,7 @@
 ;; EmacsConf 2015.
 
 (require 'cl-lib)
+(require 'ox)
 
 ;;; Code:
 
