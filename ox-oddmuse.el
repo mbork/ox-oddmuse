@@ -147,7 +147,7 @@ Include caption (below the code, in italics) if present."
   (let ((caption (org-export-get-caption src-block)))
     (concat "{{{\n"
 	    (car (org-export-unravel-code src-block))
-	    "}}}\n"
+	    "\n}}}\n"
 	    (if caption
 		(concat "//" (org-export-data caption info) "//\n")
 	      ""))))
